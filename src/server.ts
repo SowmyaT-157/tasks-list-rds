@@ -1,7 +1,8 @@
 
 import express from 'express'
-import sequelize from './config/dbConnection';
+
 import { taskRouter } from './routers/taskRouter';
+import sequelize from './config/dbConnection';
 
 
 

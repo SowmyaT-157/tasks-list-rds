@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/dbConnection";
 
+
+
 export const Task = sequelize.define('Tasks',{
     id: {
         allowNull: false,
