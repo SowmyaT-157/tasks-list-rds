@@ -7,6 +7,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@types/dotenv": "^6.1.1",
     "abbrev": "^2.0.0",
     "ansi-regex": "^6.2.2",
     "ansi-styles": "^6.2.3",
@@ -20,6 +21,7 @@
     "commander": "^10.0.1",
     "config-chain": "^1.1.13",
     "cross-spawn": "^7.0.6",
+    "dotenv": "^17.3.1",
     "dotenv-cli": "^11.0.0",
     "eastasianwidth": "^0.2.0",
     "editorconfig": "^1.0.4",
