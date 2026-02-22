@@ -1,3 +1,4 @@
+import { sendEmail } from "../aws_config/aws_connection";
 import { Task } from "../models/taskModal";
 
 type taskDetails ={
@@ -13,8 +14,15 @@ export const allTasks = async () => {
 }
 
 export const createNewTask = async (taskData: taskDetails) => {
-  const newTaskList = Task.create(taskData)
-  return taskData
+  try{
+  const newTaskList = await Task.create(taskData)
+  if(newTaskList){
+    const email = await sendEmail()
+    return taskData
+  }
+  }catch{
+    return false
+  }
 }
 
 
