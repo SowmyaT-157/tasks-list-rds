@@ -31,14 +31,17 @@ export class AwsCdkStack extends cdk.Stack {
       "Allow HTTP Access"
     );
 
-    const ami = ec2.MachineImage.latestAmazonLinux2();
-
+    const ubuntuImage = new ec2.GenericLinuxImage({
+      'eu-north-1': 'ami-073130f74f5ffb161',
+    
+  });
+    
     const ec2Instance = new ec2.Instance(this, "Instance", {
       vpc,
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.T3, ec2.InstanceSize.MICRO
       ),
-      machineImage: ec2.MachineImage.latestAmazonLinux2023(),
+      machineImage: ubuntuImage,
       securityGroup: securityGroup,
     });
 
