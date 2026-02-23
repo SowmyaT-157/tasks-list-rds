@@ -19,7 +19,7 @@ jobs:
 
      - name: CDK Deploy
        run: |
-        cd cdkDeploy
+        working-directory: ./cdkDeploy 
         npm install
         npx cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/eu-north-1
         npx cdk deploy --require-approval never
