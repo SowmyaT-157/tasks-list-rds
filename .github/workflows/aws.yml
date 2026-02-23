@@ -1,0 +1,29 @@
+name: AWS CDK CI/CD Pipeline
+
+on:
+ push:
+  branches: ["feature/tasks", "main"]
+
+
+jobs:
+ deploy:
+  runs-on: ubuntu-latest
+  steps:
+     - name: Checkout Repository
+       uses: actions/checkout@v4
+
+     - name: Setup Node.js
+       uses: actions/setup-node@v4
+       with:
+        node-version: "20"
+
+     - name: CDK Deploy
+       run: |
+        cd cdkDeploy
+        npm install
+        npx cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/eu-north-1
+        npx cdk deploy --require-approval never
+       env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: "eu-north-1"
