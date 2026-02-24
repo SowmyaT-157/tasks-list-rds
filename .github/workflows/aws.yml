@@ -4,27 +4,20 @@ on:
  push:
   branches: ["feature/tasks", "main"]
 
-
 jobs:
  deploy:
-  runs-on: ubuntu-latest
-  steps:
-     - name: Checkout Repository
-       uses: actions/checkout@v4
+      name: Deploy
+      runs-on: ubuntu-latest
+      if: github.event.workflow_run.conclusion == 'success'
+      steps:
+       - uses: easingthemes/ssh-deploy@v5.0.0
+         name: Deploy over SSH
+         with:
+            SSH_PRIVATE_KEY: ${{ secrets.PASSWORD }}
+            EC_HOST: ${{ vars.HOST }}
+            EC_USER: ${{ vars.USERNAME }}
 
-     - name: Setup Node.js
-       uses: actions/setup-node@v4
-       with:
-        node-version: "20"
   
-
-     - name: CDK Deploy
-       run: |
-        cd cdkDeploy && npx cdk deploy
-        npm install
-        npx cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/eu-north-1
-        npx cdk deploy --require-approval never
-       env:
-        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-        AWS_DEFAULT_REGION: "eu-north-1"
+    
+     
+    
