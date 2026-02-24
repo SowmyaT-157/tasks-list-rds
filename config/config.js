@@ -2,7 +2,6 @@ require("dotenv").config({
   path: require("path").resolve(__dirname, "../.env"),
 
 });
-console.log("dfghjnjhbkw chbjew",process.env.L_USERNAME)
 module.exports = {
   "development": {
     "username": process.env.L_USERNAME,
@@ -24,7 +23,7 @@ module.exports = {
     "password": process.env.DB_PASSWORD,
     "database": process.env.DB_DATABASE,
     "host": process.env.DB_HOST,
-    "dialect": postgres,
+    "dialect": 'postgres',
     "dialectOptions": {
       "ssl": {
         "require": true,
