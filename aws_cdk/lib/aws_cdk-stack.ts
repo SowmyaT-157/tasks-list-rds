@@ -32,8 +32,13 @@ export class AwsCdkStack extends cdk.Stack {
     );
      securityGroup.addIngressRule(
       ec2.Peer.anyIpv4(),
+      ec2.Port.tcp(443),
+      "Allow TCP Access"
+    );
+     securityGroup.addIngressRule(
+      ec2.Peer.anyIpv4(),
       ec2.Port.tcp(3004),
-      "Allow HTTP Access"
+      "Allow TCP Access"
     );
 
     const ubuntuImage = new ec2.GenericLinuxImage({
@@ -55,8 +60,17 @@ export class AwsCdkStack extends cdk.Stack {
       allowAllOutbound: true,
     });
 
+    const parameterGroup = new rds.ParameterGroup(this, 'RDSParameterGroup', {
+      engine: rds.DatabaseInstanceEngine.postgres({ 
+         version: rds.PostgresEngineVersion.VER_17,
+      }),
+      parameters: {
+        "rds.force_ssl": '0',
+      },
+    });
+
     dbSecurityGroup.addIngressRule(
-      ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      ec2.Peer.anyIpv4(),
       ec2.Port.tcp(5432),
       "Allow Postgres access from within VPC",
     );
@@ -76,7 +90,7 @@ export class AwsCdkStack extends cdk.Stack {
       securityGroups: [dbSecurityGroup],
       databaseName: "task_database_cdk",
       allocatedStorage: 20,
-
+      parameterGroup: parameterGroup,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       deletionProtection: false,
     });
