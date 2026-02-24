@@ -1,3 +1,4 @@
+import { error } from "node:console";
 import { sendEmail } from "../aws_config/aws_connection";
 import { Task } from "../models/taskModal";
 
@@ -14,14 +15,18 @@ export const allTasks = async () => {
 }
 
 export const createNewTask = async (taskData: taskDetails) => {
+  console.log("comming to service");
   try{
-  const newTaskList = await Task.create(taskData)
-  if(newTaskList){
-    const email = await sendEmail()
-    return taskData
-  }
+    console.log("enter try block");
+    const newTaskList = await Task.create(taskData);
+    console.log("task datasss",newTaskList);
+    if(newTaskList){
+      console.log("data comming",newTaskList);
+      await sendEmail();
+      return newTaskList;
+    }
   }catch{
-    return false
+    throw error
   }
 }
 
