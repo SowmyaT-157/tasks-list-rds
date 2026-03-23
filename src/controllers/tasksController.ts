@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { allTasks, createNewTask } from "../services/tasksServices";
+import { allTasks, createNewTask, deleteTheTask } from "../services/tasksServices";
+import { Task } from "../models/taskModal";
 
 export const handleTaskList = async(req:Request,res:Response) =>{
     try {
@@ -27,3 +28,18 @@ export const createTask = async(req:Request,res:Response) =>{
     }
 }
 
+
+
+export const deleteTask = async (req:Request,res:Response) =>{
+    try{
+        const taskId = req.params.id
+        const deletedTask = await deleteTheTask(taskId as string)
+        if(deletedTask){
+        return res.status(201).json({ message: "successfully deleted the task",deletedTask })
+        }else{
+        return res.status(400).json({message: "id is not matched to any task"})
+        }
+    }catch(error){
+        console.error("deleted the task successfully:", error);
+    }
+}
