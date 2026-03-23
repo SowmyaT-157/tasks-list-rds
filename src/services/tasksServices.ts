@@ -3,6 +3,7 @@ import { sendEmail } from "../aws_config/aws_connection";
 import { Task } from "../models/taskModal";
 
 type taskDetails ={
+   id:number,
    task_name:string,   
    description:string,
    priority:string,
@@ -31,3 +32,18 @@ export const createNewTask = async (taskData: taskDetails) => {
 }
 
 
+export const deleteTheTask = async (taskId: string) => {
+  console.log("Coming into the services");
+  try {
+    const deletedCount = await Task.destroy({
+      where: { id: taskId }
+    });
+    if (deletedCount === 0) {
+      console.log("there is no tasks found")
+    }
+    return { message: "Task deleted successfully", id: taskId };
+  } catch (error) {
+    console.log("Coming to the catch", error);
+    throw error;
+  }
+};
