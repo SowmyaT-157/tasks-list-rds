@@ -97,7 +97,7 @@ export class AwsCdkStack extends cdk.Stack {
 
    
 const myTopic = new sns.Topic(this, 'MyTopic');
-console.log(process.env.MY_EMAIL)
+
 myTopic.addSubscription(new subscriptions.EmailSubscription(process.env.MY_EMAIL ?? ''))
 
  const snsTopicPolicy = new iam.PolicyStatement({
