@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { allTasks, createNewTask, deleteTheTask } from "../services/tasksServices";
+import { allTasks, createNewTask, deleteTheTask, updateTask } from "../services/tasksServices";
 import { Task } from "../models/taskModal";
 
 export const handleTaskList = async(req:Request,res:Response) =>{
@@ -11,7 +11,6 @@ export const handleTaskList = async(req:Request,res:Response) =>{
     } catch {
         return res.status(400).json({ message: "data is not fetching" });
     }
-
 }
 
 export const createTask = async(req:Request,res:Response) =>{
@@ -32,7 +31,7 @@ export const createTask = async(req:Request,res:Response) =>{
 
 export const deleteTask = async (req:Request,res:Response) =>{
     try{
-        const taskId = req.params.id
+        const taskId = req.params.taskId
         const deletedTask = await deleteTheTask(taskId as string)
         if(deletedTask){
         return res.status(201).json({ message: "successfully deleted the task",deletedTask })
@@ -41,5 +40,23 @@ export const deleteTask = async (req:Request,res:Response) =>{
         }
     }catch(error){
         console.error("deleted the task successfully:", error);
+    }
+}
+
+
+export const updateTheTask = async (req:Request,res:Response) =>{
+    try{
+        console.log("enter into the controller")
+        const taskId = req.params.taskId
+        const taskdata = req.body
+        const updatedTask = await updateTask(taskId,taskdata)
+        console.log("inthe controller",updatedTask)
+        if(updatedTask){
+        return res.status(200).json({ message: "successfully updated the task" })
+        }else{
+        return res.status(400).json({message: "id is not matched to any task"})
+        }
+    }catch(error){
+        console.error("update failed because network error", error);
     }
 }

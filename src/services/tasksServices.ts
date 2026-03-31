@@ -47,3 +47,19 @@ export const deleteTheTask = async (taskId: string) => {
     throw error;
   }
 };
+
+export const updateTask = async (taskId: string|string[], data: taskDetails) => {
+  try {
+    console.log("enter into service try block")
+    const task = await Task.findOne({ where: { id: taskId } });
+    if (!task) {
+      return "Any task id not matched";
+    } else {
+      const updatedTask = await task.update(data);
+      return updatedTask;
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to update task");
+  }
+};
